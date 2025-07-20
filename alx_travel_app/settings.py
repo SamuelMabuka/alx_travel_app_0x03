@@ -1,10 +1,17 @@
+from pathlib import Path
 import environ
 import os
 
-env = environ.Env()
-environ.Env.read_env()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
+
+
+
+
+
+
 
 
 """
@@ -96,13 +103,14 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('alx_travel_db'),
-        'USER': env('root'),
-        'PASSWORD': env('0047'),
-        'HOST': env('localhost'),
-        'PORT': env('3306'),
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT"),
     }
 }
+
 
 
 # Password validation
@@ -146,3 +154,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env.bool("DEBUG", default=False)
+
+# Secret key
+SECRET_KEY = env("SECRET_KEY")
+
+# Allowed hosts — set to allow all in dev
+ALLOWED_HOSTS = []
