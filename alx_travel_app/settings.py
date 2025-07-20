@@ -1,3 +1,12 @@
+import environ
+import os
+
+env = environ.Env()
+environ.Env.read_env()
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
 """
 Django settings for alx_travel_app project.
 
@@ -8,6 +17,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
+
 """
 
 from pathlib import Path
@@ -37,6 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     'rest_framework',
+    'corsheaders',
+    'drf_yasg',
+    'listings',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'alx_travel_app.urls'
@@ -76,6 +91,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('alx_travel_db'),
+        'USER': env('root'),
+        'PASSWORD': env('0047'),
+        'HOST': env('localhost'),
+        'PORT': env('3306'),
     }
 }
 
@@ -120,3 +145,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CORS_ALLOW_ALL_ORIGINS = True
