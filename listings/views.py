@@ -13,4 +13,3 @@ class BookingViewSet(viewsets.ModelViewSet):
 
 def index(request):
     return JsonResponse({"message": "Hello from listings!"})
-
