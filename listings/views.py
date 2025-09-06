@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from .models import User, Listing, Booking, Review, Payment
 from rest_framework import viewsets
-from .serializers import UserSerializer, ListingSerializer, BookingSerializer, ReviewSerializer
-import uuid
+from .serializers import ListingSerializer, BookingSerializer
 import requests
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from .tasks import send_booking_confirmation_email
 
 # Create your views here.
 
@@ -20,7 +20,13 @@ class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer 
 
+    def perform_create(self, serializer):
+        booking = serializer.save()
 
+        # Trigger background email task
+        user_email = booking.user.email if booking.user else None
+        if user_email:
+            send_booking_confirmation_email.delay(user_email, booking.id)
 
 
 # Initializes a new payment

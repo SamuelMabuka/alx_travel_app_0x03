@@ -11,6 +11,5 @@ router.register(r'listings', ListingViewSet)
 router.register(r'bookings', BookingViewSet)
 
 urlpatterns = [
-    path('', views.index, name='index'),  # or your actual view endpoints
     path('', include(router.urls)),
 ]
