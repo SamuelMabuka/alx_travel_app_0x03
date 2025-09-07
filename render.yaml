@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: alx-travel-app
+    env: python
+    buildCommand: "./manage.py migrate"
+    startCommand: "gunicorn alx_travel_app.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        value: your-secret-key
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: DATABASE_URL
+        value: mysql://user:password@host:3306/dbname
+      - key: CELERY_BROKER_URL
+        value: redis://default:password@host:6379/0
