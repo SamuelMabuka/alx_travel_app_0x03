@@ -2,16 +2,30 @@ services:
   - type: web
     name: alx-travel-app
     env: python
-    buildCommand: "./manage.py migrate"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
     startCommand: "gunicorn alx_travel_app.wsgi:application"
     envVars:
       - key: SECRET_KEY
-        value: your-secret-key
+        generateValue: true
       - key: DEBUG
-        value: False
+        value: "False"
       - key: ALLOWED_HOSTS
         value: "*"
       - key: DATABASE_URL
-        value: mysql://user:password@host:3306/dbname
+        fromDatabase:
+          name: alx-travel-db
+          property: connectionString
       - key: CELERY_BROKER_URL
-        value: redis://default:password@host:6379/0
+        fromService:
+          type: redis
+          name: alx-travel-redis
+          property: connectionString
+
+  - type: redis
+    name: alx-travel-redis
+    plan: free
+
+databases:
+  - name: alx-travel-db
+    databaseName: alx_travel_db
+    user: alx_travel_user
