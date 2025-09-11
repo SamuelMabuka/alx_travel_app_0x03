@@ -11,3 +11,5 @@ alx_env/
 .coverage
 db.sqlite3
 .DS_Store
+staticfiles/
+test.db
