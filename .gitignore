@@ -1,1 +1,15 @@
-.env
+venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+alx_env/
+.pytest_cache/
+.coverage
+db.sqlite3
+.DS_Store
+staticfiles/
+test.db
